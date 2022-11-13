@@ -1,0 +1,48 @@
+#include <stdio.h>
+#include <math.h>
+int food[100] = {0};
+double resolution = 0.0001;
+double F(double a);
+double S(double a, double b,double resolution);
+int n = 0;
+int p = 0;
+int main()
+{
+    scanf("%d%d", &n, &p);
+    for (int i = 0; i < n + 1; i++)
+    {
+        scanf("%d", &food[i]);
+    }
+    double a = 0;
+    double b = 0;
+    scanf("%lf%lf", &a, &b);
+    printf("%lf", S(a, b,resolution));
+    return 0;
+}
+double F(double a)
+{
+    double sum = 0;
+    for (int i = 0; i < n + 1; i++)
+    {
+        sum += food[i] * pow(a, i);
+    }
+    return pow(sum, p);
+}
+double S(double a, double b,double resolution)
+{
+    double ans = 0;
+    double mid = (a + b) / 2;
+    double sl = (F(a) + F(mid) + F((a + mid) / 2) * 4) * (mid - a) / 6 ;
+    double sr = (F(mid) + F(b) + F((mid + b) / 2) * 4) * (b - mid) / 6;
+    double whole = (F(a) + F(b) + F((a + b) / 2) * 4) * (b - a) / 6;
+    if (sl + sr - whole < 15 * resolution&&whole - sl - sr <15 * resolution)
+    {
+        return (sl + sr - whole) / 15 + sl +sr;
+    }
+    else
+    {
+     
+        return S(a, mid,resolution / 2) + S(mid, b,resolution / 2);
+        //此处应把精度传入下一个函数
+    }
+}
